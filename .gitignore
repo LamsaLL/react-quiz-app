@@ -11,6 +11,6 @@
 /client/build
 
 # misc
-.env
+/config/.env
 .vscode
 keepinmind.txt
