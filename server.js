@@ -1,19 +1,19 @@
 const express = require('express');
 require('dotenv').config({path: './config/.env'});
-require('./config/db');
+
+const mongoDBMiddlewares = require('./middlewares/mongodb.js');
+const questionsRouter = require('./routes/questions.js');
 
 const PORT = process.env.PORT || 5000;
 
 const app = express();
 
+//middlewares
 app.use(express.json());
+app.use(mongoDBMiddlewares);
 
 //routes
-app.get('/api/question', (req, res) => {
-  res.send({
-    msg: 'saluut !!!'
-  })
-});
+app.use(questionsRouter);
 
 // server
 app.listen(PORT, () => {
