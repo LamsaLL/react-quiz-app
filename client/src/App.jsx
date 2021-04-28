@@ -1,27 +1,25 @@
 
-import React, { useState } from 'react';
-import logo from './logo.svg';
+// import React, { useState } from 'react';
+import Card from './components/Card/Card.jsx';
+import Layout from './components/Layout/Layout.jsx';
+import Button from './components/Button/Button.jsx'
 
-const App = () => {
-  const [questions, setQuestions] = useState([]);
-
-  const handleClick = () => {
-    fetch('/api/questions')
-      .then(response => response.json())
-      .then(data => setQuestions(data));
-  }
-
+const App = () => { 
   return (
-    <div>
-      <button onClick={handleClick} className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"> 
-        Click me 
-      </button>
-      {
-        questions.map((question) => (
-          <h1>{question.text_question}</h1>
-        ))
-      }     
-    </div>
+    <Layout className="h-screen items-center justify-center">
+      <div className="container">
+        <Card className="shadow-2xl">
+          <div className="p-4 text-center text-xl">
+            Blablabla?
+          </div>
+          <div className="flex flex-wrap gap-4 p-4 justify-center">
+            <Button text="Vraie"> </Button>
+            <Button text="Faux"> </Button>
+            <Button text="Valider"> </Button>
+          </div>
+        </Card>
+      </div>
+    </Layout>
   );
 }
 
