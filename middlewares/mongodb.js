@@ -1,7 +1,8 @@
 const mongoose = require('mongoose');
 const Questions = require('../models/questions.js');
+require('dotenv').config({path: './config/.env'});
 
-mongoose.connect('mongodb://localhost/quizDB', {
+mongoose.connect( process.env.DB_URI, {
     useNewUrlParser: true,
     useUnifiedTopology: true,
 })
