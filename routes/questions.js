@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 
+
 router.get('/api/questions', (req, res) => {
     const { Questions }  = req.model;
 
@@ -20,5 +21,13 @@ router.get('/api/questions', (req, res) => {
     });
 });
 
+
+router.get('/api/randomQuestions', (req, res) => {
+    const { Questions }  = req.model;
+    
+    Questions.aggregate([{$sample: {size: 3}}], (err, docs) => {     
+        res.json(docs);
+    });
+});
 
 module.exports = router;
