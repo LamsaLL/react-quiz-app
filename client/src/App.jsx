@@ -10,15 +10,31 @@ const App = () => {
   const { data = [], loading, error } = useFetch('/api/randomQuestions', {});
 
   const [currentQuestion, setCurrentQuestion] = useState(0);
+  const [userAnswer, setUserAnswer] = useState(false);
+  const [score, setScore] = useState(0);
+  const [showScore, setShowScore] = useState(false)
 
   const text_question = data.length !== 0 ? data[currentQuestion].question_text : "";
 
-  const handleAnswerButtonClick = (questions) => {
+  const handleTrueButtonClick = () =>{
+    setUserAnswer(true);
+  }
+
+  const handleFalseButtonClick = () =>{
+    setUserAnswer(false);    
+  }
+
+  const handleValidateButtonClick = () => {
     const nextQuestion = currentQuestion + 1;
-    if (nextQuestion < questions.length) {
+    
+    if ( userAnswer === data[currentQuestion].answer) {
+      setScore(score + 1);
+    }
+    
+    if (nextQuestion < data.length) {
       setCurrentQuestion(nextQuestion);
     } else {
-      console.log('you reached the end of the quiz');
+      setShowScore(true);
     }
   };
 
@@ -34,9 +50,12 @@ const App = () => {
             </div>
           }
           <div className="flex flex-wrap gap-4 p-4 justify-center">
-            <Button text="Vraie"> </Button>
-            <Button text="Faux"> </Button>
-            <Button text="Valider" > </Button>
+            <Button className="focus:bg-green-400" onClick={handleTrueButtonClick} text="Vraie"> </Button>
+            <Button className="focus:bg-red-400" onClick={handleFalseButtonClick} text="Faux"> </Button>
+            <Button className="text-white bg-blue-400" onClick={handleValidateButtonClick} text="Valider" > </Button>
+          </div>
+          <div className=''>
+            {showScore ? <div className='score-section'> Your score is {score}/{data.length} </div> : <></>}
           </div>
         </Card>
       </div>
