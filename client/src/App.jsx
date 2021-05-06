@@ -3,7 +3,7 @@ import React, { useReducer, useState } from 'react';
 import useFetch from './hooks/useFetch.jsx';
 
 import Score from './components/Score/Score.jsx';
-import Questions from './components/Questions/Questions.jsx'
+import Question from './components/Question/Question.jsx'
 import Card from './components/Card/Card.jsx';
 import Layout from './components/Layout/Layout.jsx';
 
@@ -72,7 +72,7 @@ const App = () => {
                 handleRestartButtonClick={handleRestartButtonClick}
               />
               :
-              <Questions
+              <Question
                 error={error}
                 loading={loading}
                 text_question={text_question}
