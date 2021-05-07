@@ -6,7 +6,7 @@ const initialState = {
     error: ""
 };
 
-const apiReducer = (state, action) => {
+const fetchReducer = (state, action) => {
     switch (action.type) {
         case "DATA_FETCH_START":
             return { ...state, loading: "yes" };
@@ -19,11 +19,11 @@ const apiReducer = (state, action) => {
     }
 };
 
-const useFetch = (endpoint, options) => {
-    const [data, dispatch] = useReducer(apiReducer, initialState);
+const useFetch = (endpoint, version, options = {}) => {
+    const [data, dispatch] = useReducer(fetchReducer, initialState);
 
     useEffect(() => {
-        dispatch({ type: "DATA_FETCH_START" });
+        dispatch({ type: "DATA_FETCH_START"});
 
         fetch(endpoint, options)
             .then(response => {
@@ -36,7 +36,7 @@ const useFetch = (endpoint, options) => {
             .catch(error => {
                 dispatch({ type: "DATA_FETCH_FAILURE", payload: error.message });
             });
-    }, []);
+    }, [version]);
 
     return data;
 };
