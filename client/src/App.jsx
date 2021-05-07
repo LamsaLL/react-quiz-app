@@ -8,55 +8,56 @@ import Card from './components/Card/Card.jsx';
 import Layout from './components/Layout/Layout.jsx';
 
 const initialState = {
-  currentQuestion: 0,
+  indCurrentQuestion: 0,
   userAnswer: false,
   score: 0,
   showScore: false
 };
 
-const reducer = (state, action) => {
+const quizReducer = (state, action) => {
   if (action.type === "RESET") {
     return initialState;
   }
   const result = { ...state };
-  result[action.type] = action.value;
+  result[action.type] = action.payload;
 
   return result;
 };
 
-
 const App = () => {
-  const { data = [], loading, error } = useFetch('/api/randomQuestions', {});
+  const [version, setVersion] = useState(0);
+  const { data = [], loading, error } = useFetch('/api/randomQuestions', version);
 
-  const [state, dispatch] = useReducer(reducer, initialState);
-  const { currentQuestion, userAnswer, score, showScore } = state;
+  const [state, dispatch] = useReducer(quizReducer, initialState);
+  const { indCurrentQuestion, userAnswer, score, showScore } = state;
 
-  const text_question = data.length !== 0 ? data[currentQuestion].question_text : "";
-  const answer_question = data.length !== 0 ? data[currentQuestion].answer : "";
+  const text_question = data.length !== 0 ? data[indCurrentQuestion].question_text : "";
+  const answer_question = data.length !== 0 ? data[indCurrentQuestion].answer : "";
 
   const handleTrueButtonClick = () => {
-    dispatch({ type: 'userAnswer', value: true });
+    dispatch({ type: 'userAnswer', payload: true });
   }
 
   const handleFalseButtonClick = () => {
-    dispatch({ type: 'userAnswer', value: false });
+    dispatch({ type: 'userAnswer', payload: false });
   }
 
   const handleValidateButtonClick = () => {
-    const nextQuestion = currentQuestion + 1;
+    const indNextQuestion = indCurrentQuestion + 1;
 
     if (userAnswer === answer_question) {
-      dispatch({ type: 'score', value: score + 1 });
+      dispatch({ type: 'score', payload: score + 1 });
     }
 
-    if (nextQuestion < data.length) {
-      dispatch({ type: 'currentQuestion', value: nextQuestion });
+    if (indNextQuestion < data.length) {
+      dispatch({ type: 'indCurrentQuestion', payload: indNextQuestion });
     } else {
-      dispatch({ type: 'showScore', value: true });
+      dispatch({ type: 'showScore', payload: true });
     }
   };
 
   const handleRestartButtonClick = () => {
+    setVersion(version+1);
     dispatch({ type: "RESET" });
   }
 
