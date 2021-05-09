@@ -14,3 +14,5 @@
 /config/.env
 .vscode
 keepinmind.txt
+/client/.eslintcache
+.eslintcache
