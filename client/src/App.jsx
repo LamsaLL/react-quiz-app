@@ -1,9 +1,8 @@
-
 import React, { useReducer, useState } from 'react';
 import useFetch from './hooks/useFetch.jsx';
 
 import Score from './components/Score/Score.jsx';
-import Question from './components/Question/Question.jsx'
+import Question from './components/Question/Question.jsx';
 import Card from './components/Card/Card.jsx';
 import Layout from './components/Layout/Layout.jsx';
 
@@ -11,11 +10,11 @@ const initialState = {
   indCurrentQuestion: 0,
   userAnswer: false,
   score: 0,
-  showScore: false
+  showScore: false,
 };
 
 const quizReducer = (state, action) => {
-  if (action.type === "RESET") {
+  if (action.type === 'RESET') {
     return initialState;
   }
   const result = { ...state };
@@ -26,21 +25,26 @@ const quizReducer = (state, action) => {
 
 const App = () => {
   const [version, setVersion] = useState(0);
-  const { data = [], loading, error } = useFetch('/api/randomQuestions', version);
+  const { data = [], loading, error } = useFetch(
+    '/api/randomQuestions',
+    version
+  );
 
   const [state, dispatch] = useReducer(quizReducer, initialState);
   const { indCurrentQuestion, userAnswer, score, showScore } = state;
 
-  const text_question = data.length !== 0 ? data[indCurrentQuestion].question_text : "";
-  const answer_question = data.length !== 0 ? data[indCurrentQuestion].answer : "";
+  const text_question =
+    data.length !== 0 ? data[indCurrentQuestion].question_text : '';
+  const answer_question =
+    data.length !== 0 ? data[indCurrentQuestion].answer : '';
 
   const handleTrueButtonClick = () => {
     dispatch({ type: 'userAnswer', payload: true });
-  }
+  };
 
   const handleFalseButtonClick = () => {
     dispatch({ type: 'userAnswer', payload: false });
-  }
+  };
 
   const handleValidateButtonClick = () => {
     const indNextQuestion = indCurrentQuestion + 1;
@@ -57,35 +61,34 @@ const App = () => {
   };
 
   const handleRestartButtonClick = () => {
-    setVersion(version+1);
-    dispatch({ type: "RESET" });
-  }
+    setVersion(version + 1);
+    dispatch({ type: 'RESET' });
+  };
 
   return (
     <Layout className="h-screen items-center justify-center bg-blue-200">
       <div className="container">
         <Card className="shadow-2xl">
-          {
-            showScore ?
-              <Score
-                score={score}
-                numberOfQuestions={data.length}
-                handleRestartButtonClick={handleRestartButtonClick}
-              />
-              :
-              <Question
-                error={error}
-                loading={loading}
-                text_question={text_question}
-                handleTrueButtonClick={handleTrueButtonClick}
-                handleFalseButtonClick={handleFalseButtonClick}
-                handleValidateButtonClick={handleValidateButtonClick}
-              />
-          }
+          {showScore ? (
+            <Score
+              score={score}
+              numberOfQuestions={data.length}
+              handleRestartButtonClick={handleRestartButtonClick}
+            />
+          ) : (
+            <Question
+              error={error}
+              loading={loading}
+              text_question={text_question}
+              handleTrueButtonClick={handleTrueButtonClick}
+              handleFalseButtonClick={handleFalseButtonClick}
+              handleValidateButtonClick={handleValidateButtonClick}
+            />
+          )}
         </Card>
       </div>
     </Layout>
   );
-}
+};
 
 export default App;
