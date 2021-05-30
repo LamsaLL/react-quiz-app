@@ -12,10 +12,13 @@ const app = express();
 app.use(express.json());
 app.use(mongoDBMiddlewares);
 
+app.use(express.urlencoded({ extended: true }));
+app.use(express.json());
+
 //routes
 app.use(questionsRouter);
 
 // server
 app.listen(PORT, () => {
-  console.log(`Server listening on ${PORT}`);
+  console.log(`Server listening on port: ${PORT}`);
 });
