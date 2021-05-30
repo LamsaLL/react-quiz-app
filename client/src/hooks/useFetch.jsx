@@ -2,7 +2,7 @@ import { useEffect, useReducer } from 'react';
 
 const initialState = {
   data: [],
-  loading: '',
+  loading: 'yes',
   error: '',
 };
 
