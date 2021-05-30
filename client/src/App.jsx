@@ -1,6 +1,8 @@
 import React, { useReducer, useState } from 'react';
 import useFetch from './hooks/useFetch.jsx';
+import { Router, BrowserRouter, Route, Switch, Link } from 'react-router-dom';
 
+import Login from './components/Login/Login.jsx';
 import Score from './components/Score/Score.jsx';
 import Question from './components/Question/Question.jsx';
 import Card from './components/Card/Card.jsx';
@@ -33,10 +35,8 @@ const App = () => {
   const [state, dispatch] = useReducer(quizReducer, initialState);
   const { indCurrentQuestion, userAnswer, score, showScore } = state;
 
-  const text_question =
-    data.length !== 0 ? data[indCurrentQuestion].question_text : '';
-  const answer_question =
-    data.length !== 0 ? data[indCurrentQuestion].answer : '';
+  const text_question = !loading ? data[indCurrentQuestion].question_text : '';
+  const answer_question = !loading ? data[indCurrentQuestion].answer : '';
 
   const handleTrueButtonClick = () => {
     dispatch({ type: 'userAnswer', payload: true });
@@ -66,28 +66,38 @@ const App = () => {
   };
 
   return (
-    <Layout className="h-screen items-center justify-center bg-blue-200">
-      <div className="container">
-        <Card className="shadow-2xl">
-          {showScore ? (
-            <Score
-              score={score}
-              numberOfQuestions={data.length}
-              handleRestartButtonClick={handleRestartButtonClick}
-            />
-          ) : (
-            <Question
-              error={error}
-              loading={loading}
-              text_question={text_question}
-              handleTrueButtonClick={handleTrueButtonClick}
-              handleFalseButtonClick={handleFalseButtonClick}
-              handleValidateButtonClick={handleValidateButtonClick}
-            />
-          )}
-        </Card>
-      </div>
-    </Layout>
+    <BrowserRouter>
+      <Link to="/login">Login</Link>
+      <Switch>
+        <Route path="/login">
+          <Login />
+        </Route>
+        <Route path="/">
+          <Layout className="h-screen items-center justify-center bg-blue-200">
+            <div className="container">
+              <Card className="shadow-2xl">
+                {showScore ? (
+                  <Score
+                    score={score}
+                    numberOfQuestions={data.length}
+                    handleRestartButtonClick={handleRestartButtonClick}
+                  />
+                ) : (
+                  <Question
+                    error={error}
+                    loading={loading}
+                    text_question={text_question}
+                    handleTrueButtonClick={handleTrueButtonClick}
+                    handleFalseButtonClick={handleFalseButtonClick}
+                    handleValidateButtonClick={handleValidateButtonClick}
+                  />
+                )}
+              </Card>
+            </div>
+          </Layout>
+        </Route>
+      </Switch>
+    </BrowserRouter>
   );
 };
 
